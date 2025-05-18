@@ -1,4 +1,5 @@
 # Spotify Playlist Creator with Terraform 
+![Preview of the Spotify Playlist created with Terraform](images/terraform_generated_playlist.jpg)
 
 This project combines **Terraform** with a simple **JavaScript (Node.js) auth proxy server** to automate Spotify playlist creation.
 
@@ -8,9 +9,10 @@ It's initially inspired by the [Create a Spotify Playlist with Terraform](https:
 
 ## What I Did
 
-Spotify recently updated their OAuth redirect URI requirements, which caused issues with the existing Terraform Spotify provider authentication.
+Spotify recently updated their OAuth redirect URI requirements, which caused issues with the existing Terraform Spotify provider authentication. [Learn more](https://developer.spotify.com/documentation/web-api/concepts/redirect_uri)
+![Redirect URI update screenshot](images/redirecturi_policy.jpg)
 
-Since the original codebase by [conradludgate](https://github.com/conradludgate) wasn’t updated, I built a lightweight **JavaScript auth proxy server** to handle the Spotify OAuth flow correctly.
+Since the original codebase by [conradludgate](https://github.com/conradludgate/terraform-provider-spotify) wasn’t updated, I built a lightweight **JavaScript auth proxy server** to handle the Spotify OAuth flow correctly.
 
 ---
 
