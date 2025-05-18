@@ -1,6 +1,6 @@
 # Spotify Playlist Creator with Terraform 
 
-<img src="images/terraform_generated_playlist.jpg" alt="Preview" width="500" />
+<img src="images/playlist.jpg" alt="Preview" width="500" />
 
 
 This project combines **Terraform** with a simple **JavaScript (Node.js) auth proxy server** to automate Spotify playlist creation.
