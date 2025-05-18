@@ -11,7 +11,7 @@ const port = 27228;
 const {
   SPOTIFY_CLIENT_ID,
   SPOTIFY_CLIENT_SECRET,
-  SPOTIFY_REDIRECT_URI = 'http://127.0.0.1:27228/callback',
+  SPOTIFY_REDIRECT_URI = 'http://127.0.0.1:27228/spotify_callback',
   SPOTIFY_SCOPES = 'playlist-modify-private playlist-modify-public',
 } = process.env;
 
@@ -50,11 +50,11 @@ app.get('/spotify_callback', async (req, res) => {
         refresh_token: tokens.refresh_token
       })).toString('base64');
       
-    console.log('\n APIKey (for Terraform use):\n', apiKey);
+    console.log('\n APIKey :\n', apiKey);
 
     res.send(`
       <h2> Authorization complete!</h2>
-      <p>Check your terminal for the access and refresh tokens.</p>
+        <p> You can close this window now.</p>
     `);
   } catch (err) {
     console.error(' Token exchange failed:', err.response?.data || err.message);
@@ -62,6 +62,49 @@ app.get('/spotify_callback', async (req, res) => {
   }
 });
 
+app.post('/api/v1/token/terraform', express.json(), (req, res) => {
+    const authHeader = req.headers.authorization;
+  
+    if (!authHeader) {
+      return res.status(401).json({ error: 'Missing Authorization header' });
+    }
+  
+    let apiKey;
+  
+    if (authHeader.startsWith('Bearer ')) {
+      apiKey = authHeader.substring('Bearer '.length);
+    } else if (authHeader.startsWith('Basic ')) {
+      const b64 = authHeader.substring('Basic '.length);
+      const decoded = Buffer.from(b64, 'base64').toString(); 
+      apiKey = decoded.split(':')[1]; // [1] which one has the API key
+
+    } else {
+      return res.status(401).json({ error: 'Invalid Authorization scheme' });
+    }
+  
+    try {
+      const decoded = JSON.parse(Buffer.from(apiKey, 'base64').toString());
+  
+      if (!decoded.access_token || !decoded.refresh_token) {
+        return res.status(400).json({ error: 'Invalid API key format' });
+      }
+  
+      return res.json({
+        access_token: decoded.access_token,
+        refresh_token: decoded.refresh_token,
+      });
+    } catch (err) {
+      console.error('Failed to decode API key:', err);
+      return res.status(400).json({ error: 'Invalid API key' });
+    }
+  });
+
+  app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+  });
+  
+
+  
 app.listen(port, () => {
   console.log(`\n Auth proxy running at http://127.0.0.1:${port}/login`);
   open(`http://127.0.0.1:${port}/login`);
