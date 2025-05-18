@@ -1,15 +1,14 @@
-resource "spotify_playlist" "playlist" {
-  name        = "Terraform Summer Playlist 2"
+data "spotify_search_track" "top_tracks" {
+  artist = var.artist_name
+  limit  = 5
+}
+
+resource "spotify_playlist" "artist_top_5" {
+  name        = "Terraform Playlist: ${var.artist_name}"
+  description = "Top tracks of ${var.artist_name} created with Terraform"
+  public      = false
+
   tracks = [
-    data.spotify_search_track.by_artist.tracks[0].id,
-    data.spotify_search_track.by_artist.tracks[1].id,
-    data.spotify_search_track.by_artist.tracks[2].id,
+    for t in data.spotify_search_track.top_tracks.tracks : t.id
   ]
 }
-
-data "spotify_search_track" "by_artist" {
-  artist = "Dolly Parton"
-  #  album = "Jolene"
-  #  name  = "Early Morning Breeze"
-}
-
