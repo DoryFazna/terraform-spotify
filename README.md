@@ -26,7 +26,8 @@ Since the original codebase by [conradludgate](https://github.com/conradludgate/
 - Auth proxy server built in Node.js + Express  
 - Handles Spotify OAuth redirects and token exchange  
 - Provides an API key for Terraform Spotify provider  
-- Dockerized for easy usage — no local setup required!
+- Dockerized for easy usage — no local setup required! 
+- https://hub.docker.com/repository/docker/doryfazna/spotify-auth-proxy/general
 
 ---
 
