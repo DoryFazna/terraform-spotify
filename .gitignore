@@ -1,3 +1,7 @@
+# Where spotify related sensitive data is stored
+.env
+
+tes
 # Local .terraform directories
 **/.terraform/*
 
@@ -32,3 +36,9 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+.terraform.Lock.hcl
+
+package-lock.json
+package.json
+node_modules
